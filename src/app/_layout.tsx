@@ -1,6 +1,7 @@
 import Screens from '@/components/app/Screens';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
@@ -26,6 +27,7 @@ export default function RootLayout() {
 
     return (
         <>
+            <StatusBar style='light' />
             <Screens />
         </>
     );
