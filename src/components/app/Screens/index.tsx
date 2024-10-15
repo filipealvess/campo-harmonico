@@ -12,6 +12,11 @@ function Screens() {
                 name='mode'
                 options={{headerShown: false}}
             />
+
+            <Stack.Screen
+                name='test'
+                options={{headerShown: false}}
+            />
         </Stack>
     );
 }
