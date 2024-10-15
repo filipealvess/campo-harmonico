@@ -1,5 +1,6 @@
 import Button from '@/components/form/Button';
 import Text from '@/components/styled/Text';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
@@ -8,6 +9,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 function Mode() {
     const [mode, setMode] = useState<'manual' | 'timer'>('manual');
     const [timer, setTimer] = useState(5);
+
+    const router = useRouter();
+    const params = useLocalSearchParams();
+
+    function handleSubmit() {
+        const query = `note=${params.note}&mode=${mode}`;
+
+        router.push(`/test?${query}`);
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -64,7 +74,10 @@ function Mode() {
                         </View>
                     )}
 
-                    <Button style={styles.submitButton}>
+                    <Button
+                        onClick={handleSubmit}
+                        style={styles.submitButton}
+                    >
                         Selecionar
                     </Button>
                 </ScrollView>

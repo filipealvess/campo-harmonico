@@ -10,6 +10,12 @@ function Index() {
 
     const router = useRouter();
 
+    function handleSubmit() {
+        const query = `note=${note}`;
+
+        router.push(`/mode?${query}`);
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <Text
@@ -98,7 +104,7 @@ function Index() {
             <Button
                 disabled={note === ''}
                 style={styles.submitButton}
-                onClick={() => router.push('/mode')}
+                onClick={handleSubmit}
             >
                 Selecionar
             </Button>
