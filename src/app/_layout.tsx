@@ -1,5 +1,5 @@
+import Screens from '@/components/app/Screens';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
@@ -9,9 +9,9 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
     const [loaded] = useFonts({
-        Regular: require('../assets/fonts/Monteserrat-Regular.ttf'),
-        Medium: require('../assets/fonts/Monteserrat-Medium.ttf'),
-        Semibold: require('../assets/fonts/Monteserrat-Semibold.ttf'),
+        Regular: require('../assets/fonts/Montserrat-Regular.ttf'),
+        Medium: require('../assets/fonts/Montserrat-Medium.ttf'),
+        Semibold: require('../assets/fonts/Montserrat-SemiBold.ttf'),
     });
 
     useEffect(() => {
@@ -25,7 +25,8 @@ export default function RootLayout() {
     }
 
     return (
-        <Stack>
-        </Stack>
+        <>
+            <Screens />
+        </>
     );
 }
