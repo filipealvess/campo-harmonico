@@ -4,7 +4,8 @@
     "version": "0.1.0",
     "scripts": {
         "start": "expo start",
-        "android": "expo start --android"
+        "android": "expo start --android",
+        "build:apk": "eas build -p android --profile preview"
     },
     "jest": {
         "preset": "jest-expo"
