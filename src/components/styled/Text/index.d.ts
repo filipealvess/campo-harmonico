@@ -2,7 +2,7 @@ import { TextStyle } from 'react-native';
 import { StyleProp } from 'react-native';
 
 export interface IProps {
-    children: string;
+    children: React.ReactNode;
     color?: string;
     size?: number;
     weight?: Weights;

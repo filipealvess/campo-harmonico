@@ -1,25 +1,40 @@
 import Button from '@/components/form/Button';
 import Text from '@/components/styled/Text';
+import { TONES } from '@/constants/notes';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 function Test() {
     const [displayed, setDisplayed] = useState(false);
+    const [step, setStep] = useState(0);
 
     const router = useRouter();
     const params = useLocalSearchParams();
 
     function handleSubmit() {
-        if (displayed === true) {
-            setDisplayed(false);
+        if (displayed === false) {
+            setDisplayed(true);
             return;
         }
 
-        setDisplayed(true);
+        generateRandomStep();
+        setDisplayed(false);
     }
+
+    function generateRandomStep() {
+        const random = Math.random() * 7;
+
+        const rounded = Math.floor(random) + 1;
+
+        setStep(rounded);
+    }
+
+    useEffect(() => {
+        generateRandomStep();
+    }, []);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -35,7 +50,7 @@ function Test() {
                             style={styles.note}
                         >
                             <Text color='#ffffff' size={18} weight='semibold'>
-                                C
+                                {params.note}
                             </Text>
                         </Pressable>
                     </View>
@@ -53,7 +68,10 @@ function Test() {
 
                     <View style={styles.card}>
                         <Text color='#ffffff' size={24} weight='semibold'>
-                            1º grau
+                            {(displayed === true ?
+                                `${TONES[String(params.note)]?.[step]}` :
+                                `${step}º grau`
+                            )}
                         </Text>
                     </View>
 
