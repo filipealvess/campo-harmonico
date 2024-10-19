@@ -2,7 +2,7 @@ import Button from '@/components/form/Button';
 import Text from '@/components/styled/Text';
 import { TONES } from '@/constants/notes';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -10,14 +10,29 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 function Test() {
     const [displayed, setDisplayed] = useState(false);
     const [step, setStep] = useState(0);
+    const [progress, setProgress] = useState(100);
 
     const router = useRouter();
     const params = useLocalSearchParams();
 
+    const timer = useRef(Number(params.timer) || 0);
+    const timerRef = useRef<NodeJS.Timeout>();
+
     function handleSubmit() {
         if (displayed === false) {
             setDisplayed(true);
+
+            if (params.mode === 'timer') {
+                clearTimeout(timerRef.current);
+            }
+
             return;
+        }
+
+        if (params.mode === 'timer') {
+            setProgress(100);
+            timer.current = Number(params.timer) || 0;
+            updateTimer();
         }
 
         generateRandomStep();
@@ -32,9 +47,32 @@ function Test() {
         setStep(rounded);
     }
 
+    function updateTimer() {
+        timerRef.current = setTimeout(() => {
+            const newValue = timer.current - 1;
+            timer.current = newValue;
+
+            setProgress(newValue / Number(params.timer) * 100);
+
+            if (newValue > 0) {
+                updateTimer();
+            }
+        }, 1000);
+    }
+
     useEffect(() => {
         generateRandomStep();
+
+        if (params.mode === 'timer') {
+            updateTimer();
+        }
     }, []);
+
+    useEffect(() => {
+        if (params.mode === 'timer' && progress === 0) {
+            handleSubmit();
+        }
+    }, [progress]);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -60,7 +98,7 @@ function Test() {
                             <View
                                 style={[
                                     styles.progress,
-                                    {width: '50%'},
+                                    {width: `${progress}%`},
                                 ]}
                             />
                         </View>
@@ -79,7 +117,10 @@ function Test() {
 
                     <Button
                         onClick={handleSubmit}
-                        style={styles.submitButton}
+                        style={[
+                            styles.submitButton,
+                            displayed === false && styles.secondaryButton
+                        ]}
                     >
                         {displayed === true ? 'Sortear' : 'Mostrar'}
                     </Button>
@@ -123,6 +164,9 @@ const styles = StyleSheet.create({
     },
     submitButton: {
         marginHorizontal: 24,
+    },
+    secondaryButton: {
+        backgroundColor: '#393939',
     },
     spacer: {
         flexGrow: 1,

@@ -14,7 +14,7 @@ function Mode() {
     const params = useLocalSearchParams();
 
     function handleSubmit() {
-        const query = `note=${params.note}&mode=${mode}`;
+        const query = `note=${params.note}&mode=${mode}&timer=${timer}`;
 
         router.push(`/test?${query}`);
     }
